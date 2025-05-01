@@ -21,8 +21,7 @@ body {
   height: 600px;
   padding: 20px;
   position: relative;
-  background-image: url('../images/texture.png');
-  background-size: cover;
+  background-image: #000;
   background-repeat: no-repeat;
   box-shadow: -5px 5px 0 #fff;
 }
