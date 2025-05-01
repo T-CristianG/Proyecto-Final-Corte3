@@ -3,26 +3,39 @@ body {
   padding: 10px;
   background-color: #444444;
   cursor: url('../images/feather.svg'), auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-  position: absolute;
-  left: 50px;
-  transform: translateX(-50%);
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  position: relative;
 }
 
+/* Portada */
 .front-cover {
   background-color: #000;
-  width: 150px;
+  width: 200px;
   height: 600px;
-  padding: 10px;
+  padding: 20px;
   position: relative;
-  display: block;
   background-image: url('../images/texture.png');
   background-size: cover;
-  box-shadow: -3px 3px 0 #ffff;
+  background-repeat: no-repeat;
+  box-shadow: -5px 5px 0 #fff;
+}
+
+.front-cover::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 4px;
+  left: -4px;
+  box-shadow: -5px 5px 0 #1b1f20;
 }
 
 .front-cover img {
@@ -33,39 +46,28 @@ body {
   transform: translateX(-50%);
 }
 
-.front-cover::before {
-  content: '';
-  box-shadow: -3px 3px 0 #1b1f20;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 4px;
-  left: -4px;
-}
-
+/* Contenido */
 .content {
-  display: block;
-  position: relative;
   width: 350px;
-  height: auto;
   min-height: 600px;
-  padding: 0 10px;
-  border: 1px solid #d9d7c8;
-  background: -webkit-linear-gradient(top, #d9d7c8 0%, white 8%) 0 56px;
+  padding: 20px;
+  background: linear-gradient(to bottom, #d9d7c8 0%, white 8%);
   background-size: 100% 30px;
-  outline: none; 
-  color: #333;
+  border: 1px solid #d9d7c8;
+  box-shadow: 3px 3px 0 #1b1f20;
   font-family: "Berkshire Swash", cursive;
+  color: #333;
   font-size: 1.2rem;
   line-height: 1.56;
+  position: relative;
 }
 
 .content::before {
   content: '';
-  box-shadow: -3px 3px 0 #1b1f20;
   position: absolute;
   width: 100%;
   height: 100%;
   top: 4px;
   left: -3px;
+  box-shadow: -3px 3px 0 #1b1f20;
 }
