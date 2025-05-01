@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 10px;
   background-color: #444444;
-  cursor: url('./images/feather.svg'), auto;
+  cursor: url('../images/feather.svg'), auto;
 }
 
 .container {
@@ -19,21 +19,21 @@ body {
   height: 600px;
   padding: 10px;
   position: relative;
-  display: stock;
+  display: block;
   background-image: url('./images/texture.png');
   background-size: cover;
   box-shadow: -3px 3px 0 #ffff;
 }
 
-.front-cover img{
+.front-cover img {
   width: 80%;
   position: absolute;
   top: 100px;
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
 }
 
-.front-cover::before{
+.front-cover::before {
   content: '';
   box-shadow: -3px 3px 0 #1b1f20;
   position: absolute;
@@ -44,7 +44,7 @@ body {
 }
 
 .content {
-  display: black;
+  display: block;
   position: relative;
   width: 350px;
   height: auto;
@@ -52,7 +52,6 @@ body {
   padding: 0 10px;
   border: 1px solid #d9d7c8;
   background: -webkit-linear-gradient(top, #d9d7c8 0%, white 8%) 0 56px;
-  -webkit-backdrop-size: 100% 38px;
   background-size: 100% 30px;
   outline: none; 
   color: #333;
@@ -60,7 +59,8 @@ body {
   font-size: 1.2rem;
   line-height: 1.56;
 }
-.content:before {
+
+.content::before {
   content: '';
   box-shadow: -3px 3px 0 #1b1f20;
   position: absolute;
