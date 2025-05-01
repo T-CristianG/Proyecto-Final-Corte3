@@ -8,7 +8,7 @@ body {
 .container {
   position: absolute;
   left: 50px;
-  transform: translatex(-50%);
+  transform: translateX(-50%);
   display: flex;
   gap: 10px;
 }
@@ -19,5 +19,53 @@ body {
   height: 600px;
   padding: 10px;
   position: relative;
-  display: s;
+  display: stock;
+  background-image: url('./images/texture.png');
+  background-size: cover;
+  box-shadow: -3px 3px 0 #ffff;
+}
+
+.front-cover img{
+  width: 80%;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%)
+}
+
+.front-cover::before{
+  content: '';
+  box-shadow: -3px 3px 0 #1b1f20;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 4px;
+  left: -4px;
+}
+
+.content {
+  display: black;
+  position: relative;
+  width: 350px;
+  height: auto;
+  min-height: 600px;
+  padding: 0 10px;
+  border: 1px solid #d9d7c8;
+  background: -webkit-linear-gradient(top, #d9d7c8 0%, white 8%) 0 56px;
+  -webkit-backdrop-size: 100% 38px;
+  background-size: 100% 30px;
+  outline: none; 
+  color: #333;
+  font-family: "Berkshire Swash", cursive;
+  font-size: 1.2rem;
+  line-height: 1.56;
+}
+.content:before {
+  content: '';
+  box-shadow: -3px 3px 0 #1b1f20;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 4px;
+  left: -3px;
 }
