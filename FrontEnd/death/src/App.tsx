@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useEffect } from 'react';
+import './App.css';
+import deathNoteLogo from '..//images/death-note.png'; // Asegúrate de tener la imagen en esta ruta
 
-const App: React.FC = () => {
+const DeathNote: React.FC = () => {
+  // Configuración de metadatos
+  useEffect(() => {
+    document.title = "Death Note App";
+  }, []);
+
   return (
-    <div style={{
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "#f4e0c5",
-      border: "5px solid #964b00",
-      padding: "40px",
-      boxSizing: "border-box",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center"
-    }}>
-      <h1 style={{ textAlign: "center", fontSize: "3rem" }}>El Gran Viaje</h1>
-      <p style={{ fontSize: "1.5rem", textAlign: "justify", maxWidth: "80%" }}>
-        En un mundo desconocido, un aventurero busca respuestas que cambiarán su destino para siempre...
-      </p>
+    <div className="deathnote-app">
+      {/* Contenedor principal */}
+      <div className="container">
+        {/* Portada del Death Note */}
+        <div className="front-cover">
+          <img 
+            src={deathNoteLogo} 
+            alt="Death Note Logo" 
+            className="logo-image"
+          />
+        </div>
+        
+        {/* Área de contenido editable con reglas iniciales */}
+        <div 
+          className="content"
+          contentEditable
+          suppressContentEditableWarning
+        >
+          <p>1. The human whose name is written in this note shall die.</p>
+          <p>2. This note will not take effect unless the writer has the person's face in their mind.</p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default App;
-
+export default DeathNote;
