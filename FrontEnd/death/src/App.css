@@ -69,3 +69,31 @@ body {
   left: -3px;
   box-shadow: -3px 3px 0 #1b1f20;
 }
+
+.upload-button {
+  position: absolute;
+  bottom: 20px;
+  right: -150px;
+  background: #1b1f20;
+  color: white;
+  padding: 10px 20px;
+  font-family: "Berkshire Swash", cursive;
+  border: 1px solid #fff;
+  box-shadow: 2px 2px 0 #1b1f20;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.upload-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #1b1f20;
+}
+
+.uploaded-image {
+  max-width: 100%;
+  display: block;
+  margin-top: 20px;
+  border: 1px solid #1b1f20;
+  box-shadow: 2px 2px 0 #1b1f20;
+}
+
