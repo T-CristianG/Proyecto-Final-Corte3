@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"BackEnd/api"
+	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/api"
 )
 
 // InitRouter define los endpoints y devuelve el mux para el servidor.

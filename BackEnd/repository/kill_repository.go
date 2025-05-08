@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"BackEnd/models"
+	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/models"
 )
 
 var (

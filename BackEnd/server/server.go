@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"BackEnd/config"
+	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/config"
 )
 
 // Start se encarga de inicializar el servidor y crear el directorio "uploads" si no existe.

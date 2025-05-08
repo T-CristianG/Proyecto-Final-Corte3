@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"BackEnd/models"
-	"BackEnd/repository"
+	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/models"
+	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/repository"
 )
 
 // RegistrarMuerte procesa las peticiones POST para registrar una muerte.
