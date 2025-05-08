@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setRespuesta(null);
 
     if (!nombre || !file) {
       setError("Debes ingresar un nombre y seleccionar una imagen.");
@@ -46,30 +47,13 @@ const App: React.FC = () => {
         throw new Error(`Error en la solicitud: ${res.statusText}`);
       }
 
-      const data = await res.json();
-      setRespuesta(data);
+      // En vez de asignar el objeto completo, establecemos un mensaje simple de éxito.
+      setRespuesta("Registro enviado exitosamente"); 
     } catch (err: any) {
       setError(err.message || "Error al enviar la solicitud");
       console.error(err);
     }
   };
-
-  // NUEVA FUNCIÓN: Obtiene todos los registros del back-end
-  const obtenerMuertes = async () => {
-    try {
-      const res = await fetch("/api/muertes");
-      if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
-      }
-      const data = await res.json();
-      /* Aquí, setRespuesta(data) asigna la respuesta completa (un array con todos los registros)
-         a la variable de estado respuesta, que luego se mostrará en el JSX. */
-      setRespuesta(data); 
-    } catch (err: any) {
-      setError(err.message || "Error al obtener registros");
-    }
-  };
-
   return (
     <div className="container">
       <div className="front-cover">
@@ -103,13 +87,10 @@ const App: React.FC = () => {
         {/* Botón que envía el formulario */}
         <button type="submit">Enviar</button>
       </form>
-      {/* Botón para obtener la lista completa de registros */}
-      <button type="button" onClick={obtenerMuertes}>Mostrar todos los registros</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {respuesta && (
         <div>
-          <h2>Respuesta del Servidor</h2>
-          <pre>{JSON.stringify(respuesta, null, 2)}</pre>
+          <h2>{respuesta}</h2>
         </div>
       )}
     </div>
