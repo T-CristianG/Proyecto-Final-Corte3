@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import './App.css';
 
 const App: React.FC = () => {
-  // Estado para previsualizar la imagen
+  // Estados existentes
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  // Estado para guardar el archivo (la imagen) seleccionado
   const [file, setFile] = useState<File | null>(null);
-  // Estado para otros datos, como un nombre
   const [nombre, setNombre] = useState("");
-  // Estado para mostrar la respuesta o errores del back-end
   const [respuesta, setRespuesta] = useState<any>(null);
   const [error, setError] = useState<string>("");
 
-  // Función para manejar la carga de la imagen (solo previsualización y guardar el archivo)
+  // Maneja la carga de la imagen (previsualización)
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile); // Guardamos el archivo en el estado para enviarlo luego
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result as string);
@@ -37,12 +34,9 @@ const App: React.FC = () => {
 
     const formData = new FormData();
     formData.append("nombre", nombre);
-    // Puedes agregar otros campos si es necesario, por ejemplo:
-    // formData.append("causa", "ataque al corazón");
     formData.append("foto", file);
 
     try {
-      // La solicitud se hace a /api/muerte, la cual se redirige al puerto 8000 mediante el proxy
       const res = await fetch("/api/muerte", {
         method: "POST",
         body: formData,
@@ -57,6 +51,22 @@ const App: React.FC = () => {
     } catch (err: any) {
       setError(err.message || "Error al enviar la solicitud");
       console.error(err);
+    }
+  };
+
+  // NUEVA FUNCIÓN: Obtiene todos los registros del back-end
+  const obtenerMuertes = async () => {
+    try {
+      const res = await fetch("/api/muertes");
+      if (!res.ok) {
+        throw new Error(`Error: ${res.statusText}`);
+      }
+      const data = await res.json();
+      /* Aquí, setRespuesta(data) asigna la respuesta completa (un array con todos los registros)
+         a la variable de estado respuesta, que luego se mostrará en el JSX. */
+      setRespuesta(data); 
+    } catch (err: any) {
+      setError(err.message || "Error al obtener registros");
     }
   };
 
@@ -90,9 +100,11 @@ const App: React.FC = () => {
             hidden
           />
         </label>
-        {/* Botón Enviar que envía el formulario */}
+        {/* Botón que envía el formulario */}
         <button type="submit">Enviar</button>
       </form>
+      {/* Botón para obtener la lista completa de registros */}
+      <button type="button" onClick={obtenerMuertes}>Mostrar todos los registros</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {respuesta && (
         <div>
