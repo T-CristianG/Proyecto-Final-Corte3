@@ -86,7 +86,6 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(registro)
 }
 
-// ObtenerMuertes maneja las peticiones GET para devolver todos los registros.
 func ObtenerMuertes(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
