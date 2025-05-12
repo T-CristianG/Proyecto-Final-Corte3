@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -12,6 +13,14 @@ import (
 	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/repository"
 )
 
+var db *sql.DB
+
+// SetDB inyecta la conexión a la base de datos para que el paquete API pueda usarla.
+func SetDB(database *sql.DB) {
+	db = database
+}
+
+// RegistrarMuerte procesa el POST para registrar una nueva "muerte".
 func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
@@ -29,7 +38,6 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Nuevo: Leer y convertir edad
 	edadStr := r.FormValue("edad")
 	edad, err := strconv.Atoi(edadStr)
 	if err != nil {
@@ -67,16 +75,18 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Aquí debes añadir la edad al modelo
+	// Crea el nuevo registro incluyendo la edad.
+	// Nota: Si en la base de datos usas una columna SERIAL para el ID, podrías no enviar este dato.
 	registro := models.RegistroMuerte{
-		ID:         repository.GenerarID(),
+		ID:         repository.GenerarID(), // O bien, omitir el ID y dejar que lo genere la BD.
 		Nombre:     nombre,
-		Edad:       edad, // <-- este campo debe existir en tu modelo
+		Edad:       edad,
 		Causa:      causa,
 		FotoURL:    rutaFoto,
 		Registrado: time.Now(),
 	}
 
+	// Guarda el registro en la base de datos.
 	if err := repository.GuardarRegistro(registro); err != nil {
 		http.Error(w, "Error al guardar el registro: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -86,12 +96,14 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(registro)
 }
 
+// ObtenerMuertes procesa el GET y devuelve los registros.
 func ObtenerMuertes(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 		return
 	}
 
+	// Consulta la base de datos para obtener todos los registros.
 	registros, err := repository.ObtenerTodosRegistros()
 	if err != nil {
 		http.Error(w, "Error al obtener registros: "+err.Error(), http.StatusInternalServerError)
