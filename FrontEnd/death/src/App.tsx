@@ -56,13 +56,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div className="front-cover">
-        <img src="/images/death-note.png" alt="Death Note Logo" />
-      </div>
-
+  <div className="container">
+    <div className="form-section">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="input-group">
           <label>Nombre:</label>
           <input
             type="text"
@@ -72,7 +69,7 @@ const App: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className="input-group">
           <label>Edad:</label>
           <input
             type="number"
@@ -82,7 +79,7 @@ const App: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className="input-group">
           <label>Causa de muerte:</label>
           <input
             type="text"
@@ -91,15 +88,6 @@ const App: React.FC = () => {
             placeholder="Ataque al corazón"
           />
         </div>
-
-        {/* Sección del cuaderno (manteniendo el estilo original) */}
-        <div className="content" contentEditable={false}>
-          <p>{nombre}</p>
-          <p>{edad}</p>
-          <p>{causa}</p>
-        </div>
-
-        {imageSrc && <img src={imageSrc} alt="Uploaded" className="uploaded-image" />}
 
         <label className="upload-button">
           Cargar Foto
@@ -112,12 +100,26 @@ const App: React.FC = () => {
         </label>
 
         <button type="submit">Enviar</button>
-      </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {respuesta && <h2>{respuesta}</h2>}
+        {error && <p className="error">{error}</p>}
+        {respuesta && <h2 className="success">{respuesta}</h2>}
+      </form>
     </div>
-  );
+
+    <div className="front-cover">
+      <img src="/images/death-note.png" alt="Death Note Logo" />
+    </div>
+
+    <div className="content" contentEditable={false}>
+      <p>{nombre}</p>
+      <p>{edad}</p>
+      <p>{causa}</p>
+      {imageSrc && <img src={imageSrc} alt="Uploaded" className="uploaded-image" />}
+    </div>
+  </div>
+);
+
+
 };
 
 export default App;
