@@ -60,31 +60,27 @@ const App: React.FC = () => {
         <img src="/images/death-note.png" alt="Death Note Logo" />
       </div>
       <form onSubmit={handleSubmit}>
-        {/* Campo para el nombre */}
-        <div>
-          <label>Nombre:</label>
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </div>
-        {/* Sección para previsualizar la imagen */}
-        <div className="content" contentEditable={true}>
+        <div className="content" contentEditable={true}> {/* Campo para el nombre */}
+          <div>Nombre: 
+              <input
+                  type="text"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  required
+                />
+              </div> 
+          {/* Sección para previsualizar la imagen */} 
           {imageSrc && <img src={imageSrc} alt="Uploaded" className="uploaded-image" />}
-        </div>
-        {/* Botón para seleccionar la imagen */}
-        <label className="upload-button">
-          Cargar Foto
+          <span className="upload-button"> 
+          Cargar Foto </span>
           <input 
             type="file" 
             accept="image/*" 
             onChange={handleImageUpload} 
             hidden
           />
-        </label>
-        {/* Botón que envía el formulario */}
+          {/* Botón que envía el formulario */}
+        </div>
         <button type="submit">Enviar</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
