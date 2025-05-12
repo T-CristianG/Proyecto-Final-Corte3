@@ -88,7 +88,7 @@ const App: React.FC = () => {
             placeholder="Ataque al corazón"
           />
         </div>
-
+        <div>
         <label className="upload-button">
           Cargar Foto
           <input
@@ -98,6 +98,8 @@ const App: React.FC = () => {
             hidden
           />
         </label>
+        </div>
+        
 
         <button type="submit">Enviar</button>
 
