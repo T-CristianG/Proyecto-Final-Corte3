@@ -22,20 +22,45 @@ func GenerarID() int {
 	return ultimoID
 }
 
-// GuardarRegistro añade un registro al almacenamiento en memoria.
+// GuardarRegistro inserta un registro en la base de datos y actualiza el ID del registro.
 func GuardarRegistro(registro models.RegistroMuerte) error {
-	mutex.Lock()
-	defer mutex.Unlock()
-	almacenamientoRegistros = append(almacenamientoRegistros, registro)
+	query := `
+        INSERT INTO registro_muerte (nombre, edad, causa, foto_url, registrado)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id`
+	err := DB.QueryRow(query,
+		registro.Nombre,
+		registro.Edad,
+		registro.Causa,
+		registro.FotoURL,
+		registro.Registrado,
+	).Scan(&registro.ID)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-// ObtenerTodosRegistros devuelve todos los registros almacenados; si no hay ninguno, retorna un error.
+// ObtenerTodosRegistros recupera todos los registros de la base de datos.
 func ObtenerTodosRegistros() ([]models.RegistroMuerte, error) {
-	mutex.Lock()
-	defer mutex.Unlock()
-	if len(almacenamientoRegistros) == 0 {
+	rows, err := DB.Query(`
+        SELECT id, nombre, edad, causa, foto_url, registrado
+        FROM registro_muerte`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var registros []models.RegistroMuerte
+	for rows.Next() {
+		var r models.RegistroMuerte
+		if err := rows.Scan(&r.ID, &r.Nombre, &r.Edad, &r.Causa, &r.FotoURL, &r.Registrado); err != nil {
+			return nil, err
+		}
+		registros = append(registros, r)
+	}
+	if len(registros) == 0 {
 		return nil, errors.New("no hay registros")
 	}
-	return almacenamientoRegistros, nil
+	return registros, nil
 }
