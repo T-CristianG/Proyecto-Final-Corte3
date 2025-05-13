@@ -6,7 +6,9 @@ interface Muerte {
   edad: string;
   causa: string;
   imagen: string;
-  hora: string;
+  horaRegistro: string;
+  horaMuerte: string;
+  estado: string;
 }
 
 const App: React.FC = () => {
@@ -31,6 +33,16 @@ const App: React.FC = () => {
     }
   };
 
+  const programarMuerte = (index: number, horaMuerte: Date) => {
+    setTimeout(() => {
+      setMuertes((prevMuertes) => {
+        const nuevasMuertes = [...prevMuertes];
+        nuevasMuertes[index].estado = `💀 Falleció a las ${horaMuerte.toLocaleTimeString()}`;
+        return nuevasMuertes;
+      });
+    }, 40000); // 40 segundos
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -41,19 +53,25 @@ const App: React.FC = () => {
       return;
     }
 
-    const horaActual = new Date().toLocaleString();
+    const ahora = new Date();
+    const horaMuerte = new Date(ahora.getTime() + 40000); // +40s
     const nuevaMuerte: Muerte = {
       nombre,
       edad,
       causa: causa || "Ataque al corazón",
       imagen: imageSrc,
-      hora: horaActual,
+      horaRegistro: ahora.toLocaleString(),
+      horaMuerte: horaMuerte.toLocaleTimeString(),
+      estado: "🕒 Aún con vida",
     };
 
+    const index = muertes.length;
     setMuertes([...muertes, nuevaMuerte]);
     setRespuesta("Registro de muerte exitoso.");
 
-    // Reiniciar campos
+    programarMuerte(index, horaMuerte);
+
+    // Limpiar formulario
     setNombre("");
     setEdad("");
     setCausa("");
@@ -118,14 +136,16 @@ const App: React.FC = () => {
         <img src="/images/death-note.png" alt="Death Note Logo" />
       </div>
 
+      {/* CUADERNO DE LA DEATH NOTE (última entrada) */}
       <div className="content" contentEditable={false}>
-        <h3>Último registro:</h3>
-        <p>{nombre}</p>
+        <h3>Última entrada en el cuaderno</h3>
+        <p> {nombre}</p>
         <p>{edad}</p>
-        <p>{causa || "Ataque al corazón"}</p>
+        <p> {causa || "Ataque al corazón"}</p>
         {imageSrc && <img src={imageSrc} alt="Uploaded" className="uploaded-image" />}
       </div>
 
+      {/* REGISTROS DE MUERTES */}
       <div className="death-log">
         <h3>Registros de muertes</h3>
         {muertes.map((muerte, index) => (
@@ -135,7 +155,9 @@ const App: React.FC = () => {
               <p><strong>Nombre:</strong> {muerte.nombre}</p>
               <p><strong>Edad:</strong> {muerte.edad}</p>
               <p><strong>Causa:</strong> {muerte.causa}</p>
-              <p><strong>Hora:</strong> {muerte.hora}</p>
+              <p><strong>Registrado:</strong> {muerte.horaRegistro}</p>
+              <p><strong>Muerte programada:</strong> {muerte.horaMuerte}</p>
+              <p><strong>Estado:</strong> {muerte.estado}</p>
             </div>
           </div>
         ))}
@@ -145,3 +167,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
