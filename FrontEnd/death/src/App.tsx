@@ -8,7 +8,7 @@ const App: React.FC = () => {
   const [edad, setEdad] = useState("");
   const [causa, setCausa] = useState("");
   const [error, setError] = useState<string>("");
-  const [respuesta, setRespuesta] = useState<string | null>(null); // Estado añadido
+  const [respuesta, setRespuesta] = useState<string | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -88,6 +88,7 @@ const App: React.FC = () => {
               placeholder="Ataque al corazón"
             />
           </div>
+
           <div>
             <label className="upload-button">
               Cargar Foto
@@ -99,7 +100,7 @@ const App: React.FC = () => {
               />
             </label>
           </div>
-          
+
           <button type="submit">Enviar</button>
 
           {error && <p className="error">{error}</p>}
@@ -107,13 +108,18 @@ const App: React.FC = () => {
         </form>
       </div>
 
-      <div className="front-cover">
-        <img src="/images/death-note.png" alt="Death Note Logo" />
+      <div className="deathnote-section">
+        <div className="front-cover">
+          <img src="/images/death-note.png" alt="Death Note Logo" />
+        </div>
+
         <div className="content" contentEditable={false}>
           <p>{nombre}</p>
           <p>{edad}</p>
           <p>{causa}</p>
-          {imageSrc && <img src={imageSrc} alt="Uploaded" className="uploaded-image" />}
+          {imageSrc && (
+            <img src={imageSrc} alt="Uploaded" className="uploaded-image" />
+          )}
         </div>
       </div>
     </div>
