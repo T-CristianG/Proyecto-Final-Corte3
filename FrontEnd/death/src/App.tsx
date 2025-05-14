@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 
 const App: React.FC = () => {
@@ -9,6 +9,7 @@ const App: React.FC = () => {
   const [causa, setCausa] = useState("");
   const [error, setError] = useState<string>("");
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [muertes, setMuertes] = useState<any[]>([]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -49,11 +50,35 @@ const App: React.FC = () => {
       }
 
       setRespuesta("Registro enviado exitosamente");
+      setNombre("");
+      setEdad("");
+      setCausa("");
+      setFile(null);
+      setImageSrc(null);
     } catch (err: any) {
       setError(err.message || "Error al enviar la solicitud");
       console.error(err);
     }
   };
+
+  const fetchMuertes = async () => {
+    try {
+      const res = await fetch("/api/muertes");
+      if (!res.ok) throw new Error("Error al obtener las muertes");
+      const data = await res.json();
+      setMuertes(data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMuertes();
+  }, []);
+
+  useEffect(() => {
+    if (respuesta) fetchMuertes();
+  }, [respuesta]);
 
   return (
     <div className="container">
@@ -121,6 +146,21 @@ const App: React.FC = () => {
             <img src={imageSrc} alt="Uploaded" className="uploaded-image" />
           )}
         </div>
+      </div>
+
+      <div className="muertes-section">
+        <h2>Personas registradas</h2>
+        <ul>
+          {muertes.map((muerte, index) => (
+            <li key={index} className="muerte-item">
+              <p><strong>{muerte.nombre}</strong> ({muerte.edad} años)</p>
+              <p>{muerte.causa}</p>
+              {muerte.imagen && (
+                <img src={muerte.imagen} alt="Foto" className="muerte-foto" />
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

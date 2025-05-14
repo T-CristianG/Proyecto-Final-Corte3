@@ -161,3 +161,29 @@ button[type="submit"]:hover {
   flex-direction: row;
   gap: 20px;
 }
+
+.muertes-section {
+  width: 300px;
+  background-color: #111;
+  color: white;
+  padding: 1rem;
+  margin-left: 2rem;
+  border: 2px solid #444;
+  border-radius: 8px;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.muerte-item {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #555;
+  padding-bottom: 0.5rem;
+}
+
+.muerte-foto {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+}
