@@ -2,7 +2,6 @@ package models
 
 import "time"
 
-// RegistroMuerte representa el registro de la muerte de una persona.
 type RegistroMuerte struct {
 	ID         int       `json:"id"`
 	Nombre     string    `json:"nombre"`

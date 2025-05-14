@@ -13,7 +13,6 @@ var (
 	almacenamientoRegistros     = []models.RegistroMuerte{}
 )
 
-// GenerarID retorna un ID incremental para cada registro.
 func GenerarID() int {
 	mutex.Lock()
 	defer mutex.Unlock()
@@ -22,7 +21,6 @@ func GenerarID() int {
 	return ultimoID
 }
 
-// GuardarRegistro inserta un registro en la base de datos y actualiza el ID del registro.
 func GuardarRegistro(registro models.RegistroMuerte) error {
 	query := `
         INSERT INTO registro_muerte (nombre, edad, causa, foto_url, registrado)
@@ -41,7 +39,6 @@ func GuardarRegistro(registro models.RegistroMuerte) error {
 	return nil
 }
 
-// ObtenerTodosRegistros recupera todos los registros de la base de datos.
 func ObtenerTodosRegistros() ([]models.RegistroMuerte, error) {
 	rows, err := DB.Query(`
         SELECT id, nombre, edad, causa, foto_url, registrado

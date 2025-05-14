@@ -9,12 +9,11 @@ import (
 
 	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/api"
 	"github.com/T-CristianG/Proyecto-Final-Corte3/BackEnd/repository"
-	_ "github.com/lib/pq" // Ejecutar: go get github.com/lib/pq
+	_ "github.com/lib/pq"
 )
 
-// Conecta a la base de datos y devuelve la conexión.
 func connectDB() (*sql.DB, error) {
-	// Si las variables de entorno no están definidas, se usan valores por defecto.
+
 	host := os.Getenv("DB_HOST")
 	if host == "" {
 		host = "localhost"
@@ -41,7 +40,6 @@ func connectDB() (*sql.DB, error) {
 	return sql.Open("postgres", connStr)
 }
 
-// Crea la tabla en la base de datos si no existe.
 func createTableIfNotExists(db *sql.DB) error {
 	query := `
     CREATE TABLE IF NOT EXISTS registro_muerte (
@@ -57,27 +55,23 @@ func createTableIfNotExists(db *sql.DB) error {
 }
 
 func main() {
-	// Conecta a la base de datos.
+
 	db, err := connectDB()
 	if err != nil {
 		log.Fatal("Error al conectar a la base de datos:", err)
 	}
 
-	// Verifica que la conexión esté activa.
 	if err = db.Ping(); err != nil {
 		log.Fatal("Error al hacer ping a la base de datos:", err)
 	}
 
-	// Crea la tabla si no existe.
 	if err = createTableIfNotExists(db); err != nil {
 		log.Fatal("Error al crear la tabla:", err)
 	}
 
-	// Inyecta la conexión en los paquetes que la usan.
 	repository.SetDB(db)
 	api.SetDB(db)
 
-	// Define los endpoints.
 	http.HandleFunc("/api/muerte", api.RegistrarMuerte)
 	http.HandleFunc("/api/muertes", api.ObtenerMuertes)
 
