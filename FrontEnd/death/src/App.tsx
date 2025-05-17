@@ -52,14 +52,9 @@ const App: React.FC = () => {
     }
   }, [submitted, nombre, edad, file, causa]);
 
-  // Contador para "detalles" (400 segundos) cuando la causa es personalizada
+  // Contador para "detalles" (400 segundos) se inicia cuando hay una causa personalizada
   useEffect(() => {
-    if (
-      !submitted &&
-      causa &&
-      causa.toLowerCase() !== "ataque al corazón" &&
-      detalles === ""
-    ) {
+    if (!submitted && causa && causa.toLowerCase() !== "ataque al corazón") {
       const interval = setInterval(() => {
         setDetailsTimer((prev) => {
           if (prev <= 1) {
@@ -71,16 +66,17 @@ const App: React.FC = () => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [submitted, causa, detalles]);
+  }, [submitted, causa]);
 
-  // Inicia el contador final de 40 seg cuando se comienza a escribir en detalles
+  // Inicia el contador final de 40 segundos sólo cuando se han agotado los 400 segundos
+  // y existe algún valor en el campo "detalles"
   useEffect(() => {
-    if (!submitted && detalles.trim() !== "" && !finalCountdownStarted) {
+    if (!submitted && detailsTimer === 0 && detalles.trim() !== "" && !finalCountdownStarted) {
       setFinalCountdownStarted(true);
     }
-  }, [submitted, detalles, finalCountdownStarted]);
+  }, [submitted, detalles, finalCountdownStarted, detailsTimer]);
 
-  // Contador final de 40 seg
+  // Contador final de 40 segundos
   useEffect(() => {
     if (!submitted && finalCountdownStarted) {
       const interval = setInterval(() => {
@@ -90,7 +86,7 @@ const App: React.FC = () => {
     }
   }, [finalCountdownStarted, submitted]);
 
-  // Cuando finalTimer llega a 0, autoenvía
+  // Envio automático cuando el contador final llega a 0
   useEffect(() => {
     if (!submitted && finalCountdownStarted && finalTimer <= 0) {
       handleSubmitFinal();
@@ -113,8 +109,7 @@ const App: React.FC = () => {
     formData.append("nombre", nombre);
     formData.append("edad", edad);
     formData.append("causa", causa);
-    // Siempre se envía el campo "detalles"
-    formData.append("detalles", detalles);
+    formData.append("detalles", detalles); // Se envía siempre el campo "detalles"
     formData.append("foto", file);
 
     try {
@@ -254,7 +249,7 @@ const App: React.FC = () => {
                 onChange={(e) => setDetalles(e.target.value)}
                 placeholder="Escribe los detalles específicos"
               />
-              {!detalles && (
+              {detailsTimer > 0 && (
                 <p>
                   Tiempo restante para ingresar detalles:{" "}
                   <strong>{detailsTimer}</strong> segundos
@@ -309,7 +304,11 @@ const App: React.FC = () => {
               <p>Causa: {muerte.causa}</p>
               {muerte.detalles && <p>Detalles: {muerte.detalles}</p>}
               {muerte.fotoUrl && (
-                <img src={muerte.fotoUrl} alt="Foto" style={{ maxWidth: "200px" }} />
+                <img
+                  src={muerte.fotoUrl}
+                  alt="Foto"
+                  style={{ maxWidth: "200px" }}
+                />
               )}
             </li>
           ))}
