@@ -7,7 +7,7 @@ type RegistroMuerte struct {
 	Nombre     string    `json:"nombre"`
 	Edad       int       `json:"edad"`
 	Causa      string    `json:"causa"`
-	Detalles   string    `json:"detalles,omitempty"`
+	Detalles   string    `json:"detalles"`
 	FotoURL    string    `json:"fotoUrl"`
 	Registrado time.Time `json:"registrado"`
 }

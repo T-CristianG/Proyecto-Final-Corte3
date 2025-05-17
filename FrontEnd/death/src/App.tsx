@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [muertes, setMuertes] = useState<any[]>([]);
 
-  // Estados para los contadores y detalles adicionales
+  // Estados para los contadores y detalles
   const [causeTimer, setCauseTimer] = useState(40);
   const [detalles, setDetalles] = useState("");
   const [detailsTimer, setDetailsTimer] = useState(400);
@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const [finalCountdownStarted, setFinalCountdownStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Manejo de carga de imagen (sin cambios)
+  // Manejo de carga de imagen
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -33,15 +33,14 @@ const App: React.FC = () => {
     }
   };
 
-  // CONTADOR PARA INGRESAR LA CAUSA (40 segundos)
-  // Se activa si hay nombre, edad y foto, y la causa sigue vacía.
+  // Contador para "causa" (40 segundos)
   useEffect(() => {
     if (!submitted && nombre && edad && file && !causa) {
       const interval = setInterval(() => {
         setCauseTimer((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            // Al expirar el tiempo, se asigna el valor por defecto y se auto-envía
+            // Al expirar el tiempo, se asigna "Ataque al corazón" y se envía automáticamente
             setCausa("Ataque al corazón");
             handleSubmitFinal();
             return 0;
@@ -53,8 +52,7 @@ const App: React.FC = () => {
     }
   }, [submitted, nombre, edad, file, causa]);
 
-  // CONTADOR PARA INGRESAR DETALLES (400 segundos)
-  // Se activa si se ingresó una causa distinta a "Ataque al corazón" y aún no se han escrito detalles.
+  // Contador para "detalles" (400 segundos) cuando la causa es personalizada
   useEffect(() => {
     if (
       !submitted &&
@@ -66,7 +64,6 @@ const App: React.FC = () => {
         setDetailsTimer((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            // Si se agota este tiempo, se termina el timer sin tomar otra acción
             return 0;
           }
           return prev - 1;
@@ -76,15 +73,14 @@ const App: React.FC = () => {
     }
   }, [submitted, causa, detalles]);
 
-  // Dispara el inicio del contador final de 40 segundos cuando se comienza a escribir en detalles
+  // Inicia el contador final de 40 seg cuando se comienza a escribir en detalles
   useEffect(() => {
     if (!submitted && detalles.trim() !== "" && !finalCountdownStarted) {
       setFinalCountdownStarted(true);
     }
   }, [submitted, detalles, finalCountdownStarted]);
 
-  // CONTADOR FINAL DE 40 SEGUNDOS
-  // Se activa cuando finalCountdownStarted es true y decrementa el contador cada segundo.
+  // Contador final de 40 seg
   useEffect(() => {
     if (!submitted && finalCountdownStarted) {
       const interval = setInterval(() => {
@@ -94,14 +90,14 @@ const App: React.FC = () => {
     }
   }, [finalCountdownStarted, submitted]);
 
-  // Cuando finalTimer llega a 0, se envía automáticamente el formulario.
+  // Cuando finalTimer llega a 0, autoenvía
   useEffect(() => {
     if (!submitted && finalCountdownStarted && finalTimer <= 0) {
       handleSubmitFinal();
     }
   }, [finalTimer, finalCountdownStarted, submitted]);
 
-  // Función para el envío (auto o manual) del formulario
+  // Función para el envío (auto o manual)
   const handleSubmitFinal = async () => {
     if (submitted) return; // Evita envíos duplicados
 
@@ -117,10 +113,8 @@ const App: React.FC = () => {
     formData.append("nombre", nombre);
     formData.append("edad", edad);
     formData.append("causa", causa);
-    // Incluimos detalles solo si la causa es personalizada
-    if (causa && causa.toLowerCase() !== "ataque al corazón") {
-      formData.append("detalles", detalles);
-    }
+    // Siempre se envía el campo "detalles"
+    formData.append("detalles", detalles);
     formData.append("foto", file);
 
     try {
@@ -128,14 +122,12 @@ const App: React.FC = () => {
         method: "POST",
         body: formData,
       });
-
       if (!res.ok) {
         throw new Error(`Error en la solicitud: ${res.statusText}`);
       }
-
       setRespuesta("Registro enviado exitosamente");
       setSubmitted(true);
-      // Reiniciamos todos los estados y contadores para permitir un nuevo registro
+      // Reiniciar estados para un nuevo registro
       setNombre("");
       setEdad("");
       setCausa("");
@@ -153,11 +145,10 @@ const App: React.FC = () => {
     }
   };
 
-  // Envío manual del formulario (al presionar el botón)
+  // Envío manual (botón)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitted) return;
-
     setError("");
     setRespuesta(null);
 
@@ -170,9 +161,7 @@ const App: React.FC = () => {
     formData.append("nombre", nombre);
     formData.append("edad", edad);
     formData.append("causa", causa);
-    if (causa && causa.toLowerCase() !== "ataque al corazón") {
-      formData.append("detalles", detalles);
-    }
+    formData.append("detalles", detalles);
     formData.append("foto", file);
 
     try {
@@ -180,11 +169,9 @@ const App: React.FC = () => {
         method: "POST",
         body: formData,
       });
-
       if (!res.ok) {
         throw new Error(`Error en la solicitud: ${res.statusText}`);
       }
-
       setRespuesta("Registro enviado exitosamente");
       setSubmitted(true);
       setNombre("");
@@ -193,7 +180,6 @@ const App: React.FC = () => {
       setDetalles("");
       setFile(null);
       setImageSrc(null);
-      // Reiniciamos los contadores
       setCauseTimer(40);
       setDetailsTimer(400);
       setFinalTimer(40);
@@ -205,7 +191,7 @@ const App: React.FC = () => {
     }
   };
 
-  // Función para obtener las "muertes" registradas
+  // Función para obtener registros
   const fetchMuertes = async () => {
     try {
       const res = await fetch("/api/muertes");
@@ -253,7 +239,6 @@ const App: React.FC = () => {
             placeholder="Ataque al corazón"
           />
 
-          {/* Muestra el contador para la causa si aún no se ha escrito */}
           {nombre && !causa && (
             <p>
               Tiempo restante para registrar la causa:{" "}
@@ -261,7 +246,6 @@ const App: React.FC = () => {
             </p>
           )}
 
-          {/* Si se ingresa una causa distinta a "Ataque al corazón", se muestran los detalles */}
           {causa && causa.toLowerCase() !== "ataque al corazón" && (
             <>
               <label>Detalles específicos:</label>
@@ -278,8 +262,7 @@ const App: React.FC = () => {
               )}
               {finalCountdownStarted && (
                 <p>
-                  El registro se enviará en{" "}
-                  <strong>{finalTimer}</strong> segundos
+                  El registro se enviará en <strong>{finalTimer}</strong> segundos
                 </p>
               )}
             </>
@@ -323,8 +306,11 @@ const App: React.FC = () => {
               <p>
                 <strong>{muerte.nombre}</strong> ({muerte.edad} años)
               </p>
-              <p>{muerte.causa}</p>
-              {muerte.imagen && <img src={muerte.imagen} alt="Foto" />}
+              <p>Causa: {muerte.causa}</p>
+              {muerte.detalles && <p>Detalles: {muerte.detalles}</p>}
+              {muerte.fotoUrl && (
+                <img src={muerte.fotoUrl} alt="Foto" style={{ maxWidth: "200px" }} />
+              )}
             </li>
           ))}
         </ul>

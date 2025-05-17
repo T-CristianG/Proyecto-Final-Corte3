@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -76,15 +77,19 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Se crea el registro usando la causa modificada (que ahora incluye detalles si se indicaron)
 	registro := models.RegistroMuerte{
 		ID:         repository.GenerarID(),
 		Nombre:     nombre,
 		Edad:       edad,
 		Causa:      causa,
-		Detalles:   detalles, // Asignamos el campo detalles
+		Detalles:   detalles, // Esta propiedad se mantiene para referencia, pero ahora la cadena completa se encuentra en Causa.
 		FotoURL:    rutaFoto,
 		Registrado: time.Now(),
 	}
+
+	// Es útil loggear el valor recibido para depuración
+	log.Println("Registro a guardar:", registro)
 
 	if err := repository.GuardarRegistro(registro); err != nil {
 		http.Error(w, "Error al guardar el registro: "+err.Error(), http.StatusInternalServerError)
