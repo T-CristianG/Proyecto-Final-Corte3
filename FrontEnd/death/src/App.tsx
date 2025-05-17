@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 const App: React.FC = () => {
-  // Estados originales
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [nombre, setNombre] = useState("");
@@ -12,7 +11,6 @@ const App: React.FC = () => {
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [muertes, setMuertes] = useState<any[]>([]);
 
-  // Estados para los contadores y detalles
   const [causeTimer, setCauseTimer] = useState(40);
   const [detalles, setDetalles] = useState("");
   const [detailsTimer, setDetailsTimer] = useState(400);
@@ -20,7 +18,6 @@ const App: React.FC = () => {
   const [finalCountdownStarted, setFinalCountdownStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Manejo de carga de imagen
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -33,14 +30,14 @@ const App: React.FC = () => {
     }
   };
 
-  // Contador para "causa" (40 segundos)
+  
   useEffect(() => {
     if (!submitted && nombre && edad && file && !causa) {
       const interval = setInterval(() => {
         setCauseTimer((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            // Al expirar el tiempo, se asigna "Ataque al corazón" y se envía automáticamente
+
             setCausa("Ataque al corazón");
             handleSubmitFinal();
             return 0;
@@ -52,7 +49,6 @@ const App: React.FC = () => {
     }
   }, [submitted, nombre, edad, file, causa]);
 
-  // Contador para "detalles" (400 segundos) se inicia cuando hay una causa personalizada
   useEffect(() => {
     if (!submitted && causa && causa.toLowerCase() !== "ataque al corazón") {
       const interval = setInterval(() => {
@@ -68,15 +64,13 @@ const App: React.FC = () => {
     }
   }, [submitted, causa]);
 
-  // Inicia el contador final de 40 segundos sólo cuando se han agotado los 400 segundos
-  // y existe algún valor en el campo "detalles"
   useEffect(() => {
     if (!submitted && detailsTimer === 0 && detalles.trim() !== "" && !finalCountdownStarted) {
       setFinalCountdownStarted(true);
     }
   }, [submitted, detalles, finalCountdownStarted, detailsTimer]);
 
-  // Contador final de 40 segundos
+  
   useEffect(() => {
     if (!submitted && finalCountdownStarted) {
       const interval = setInterval(() => {
@@ -86,16 +80,15 @@ const App: React.FC = () => {
     }
   }, [finalCountdownStarted, submitted]);
 
-  // Envio automático cuando el contador final llega a 0
+  
   useEffect(() => {
     if (!submitted && finalCountdownStarted && finalTimer <= 0) {
       handleSubmitFinal();
     }
   }, [finalTimer, finalCountdownStarted, submitted]);
 
-  // Función para el envío (auto o manual)
   const handleSubmitFinal = async () => {
-    if (submitted) return; // Evita envíos duplicados
+    if (submitted) return; 
 
     setError("");
     setRespuesta(null);
@@ -109,7 +102,7 @@ const App: React.FC = () => {
     formData.append("nombre", nombre);
     formData.append("edad", edad);
     formData.append("causa", causa);
-    formData.append("detalles", detalles); // Se envía siempre el campo "detalles"
+    formData.append("detalles", detalles); 
     formData.append("foto", file);
 
     try {
@@ -122,7 +115,7 @@ const App: React.FC = () => {
       }
       setRespuesta("Registro enviado exitosamente");
       setSubmitted(true);
-      // Reiniciar estados para un nuevo registro
+      
       setNombre("");
       setEdad("");
       setCausa("");
@@ -140,7 +133,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Envío manual (botón)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitted) return;
@@ -186,7 +178,7 @@ const App: React.FC = () => {
     }
   };
 
-  // Función para obtener registros
+
   const fetchMuertes = async () => {
     try {
       const res = await fetch("/api/muertes");
@@ -282,14 +274,23 @@ const App: React.FC = () => {
 
       <div className="libros">
         <div className="libro-negro">
-          <img src="/images/death-note.png" alt="Death Note Logo" />
+          <img
+            src="/images/death-note.png"
+            alt="Death Note Logo"
+          />
         </div>
 
         <div className="libro-blanco">
           <p>{nombre}</p>
           <p>{edad}</p>
           <p>{causa}</p>
-          {imageSrc && <img src={imageSrc} alt="Uploaded" />}
+          {imageSrc && (
+            <img
+              src={imageSrc}
+              alt="Uploaded"
+              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+            />
+          )}
         </div>
       </div>
 
@@ -307,7 +308,7 @@ const App: React.FC = () => {
                 <img
                   src={muerte.fotoUrl}
                   alt="Foto"
-                  style={{ maxWidth: "200px" }}
+                  style={{ width: "100px", height: "100px", objectFit: "cover" }}
                 />
               )}
             </li>
