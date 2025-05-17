@@ -49,7 +49,6 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		causa = "ataque al corazón"
 	}
 
-	// Leer el campo "detalles" del formulario
 	detalles := r.FormValue("detalles")
 
 	archivo, manejador, err := r.FormFile("foto")
@@ -77,18 +76,16 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Se crea el registro usando la causa modificada (que ahora incluye detalles si se indicaron)
 	registro := models.RegistroMuerte{
 		ID:         repository.GenerarID(),
 		Nombre:     nombre,
 		Edad:       edad,
 		Causa:      causa,
-		Detalles:   detalles, // Esta propiedad se mantiene para referencia, pero ahora la cadena completa se encuentra en Causa.
+		Detalles:   detalles,
 		FotoURL:    rutaFoto,
 		Registrado: time.Now(),
 	}
 
-	// Es útil loggear el valor recibido para depuración
 	log.Println("Registro a guardar:", registro)
 
 	if err := repository.GuardarRegistro(registro); err != nil {
