@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './App.css';
+import "./App.css";
 
 const App: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -82,82 +82,50 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      <div className="form-section">
+      <div className="formulario">
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Nombre:</label>
-            <input
-              type="text"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
-          </div>
+          <label>Nombre:</label>
+          <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
 
-          <div className="input-group">
-            <label>Edad:</label>
-            <input
-              type="number"
-              value={edad}
-              onChange={(e) => setEdad(e.target.value)}
-              required
-            />
-          </div>
+          <label>Edad:</label>
+          <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} required />
 
-          <div className="input-group">
-            <label>Causa de muerte:</label>
-            <input
-              type="text"
-              value={causa}
-              onChange={(e) => setCausa(e.target.value)}
-              placeholder="Ataque al corazón"
-            />
-          </div>
+          <label>Causa de muerte:</label>
+          <input type="text" value={causa} onChange={(e) => setCausa(e.target.value)} placeholder="Ataque al corazón" />
 
-          <div>
-            <label className="upload-button">
-              Cargar Foto
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                hidden
-              />
-            </label>
-          </div>
+          <label className="file-button">
+            Cargar Foto
+            <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
+          </label>
 
           <button type="submit">Enviar</button>
 
           {error && <p className="error">{error}</p>}
-          {respuesta && <h2 className="success">{respuesta}</h2>}
+          {respuesta && <p className="success">{respuesta}</p>}
         </form>
       </div>
 
-      <div className="deathnote-section">
-        <div className="front-cover">
+      <div className="libros">
+        <div className="libro-negro">
           <img src="/images/death-note.png" alt="Death Note Logo" />
         </div>
 
-        <div className="content" contentEditable={false}>
+        <div className="libro-blanco">
           <p>{nombre}</p>
           <p>{edad}</p>
           <p>{causa}</p>
-          {imageSrc && (
-            <img src={imageSrc} alt="Uploaded" className="uploaded-image" />
-          )}
+          {imageSrc && <img src={imageSrc} alt="Uploaded" />}
         </div>
       </div>
 
-      <div className="muertes-section">
+      <div className="muertes">
         <h2>Personas registradas</h2>
         <ul>
           {muertes.map((muerte, index) => (
-            <li key={index} className="muerte-item">
+            <li key={index}>
               <p><strong>{muerte.nombre}</strong> ({muerte.edad} años)</p>
               <p>{muerte.causa}</p>
-              {muerte.imagen && (
-                <img src={muerte.imagen} alt="Foto" className="muerte-foto" />
-              )}
+              {muerte.imagen && <img src={muerte.imagen} alt="Foto" />}
             </li>
           ))}
         </ul>

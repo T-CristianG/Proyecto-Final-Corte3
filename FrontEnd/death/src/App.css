@@ -1,189 +1,172 @@
 body {
   margin: 0;
-  padding: 10px;
-  background-color: #444444;
-  cursor: url('../images/feather.svg'), auto;
+  font-family: Arial, sans-serif;
+  background-color: #1e1e1e;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .container {
   display: flex;
-  gap: 20px;
-  position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  padding: 2rem;
 }
 
-.front-cover {
-  background-color: #000;
-  width: 350px;
-  height: 600px;
-  padding: 20px;
-  position: relative;
-  background-image: #000;
-  background-repeat: no-repeat;
-  box-shadow: -5px 5px 0 #fff;
-}
-
-.front-cover::before {
-  content: '';
-  position: absolute;
+.formulario {
+  background-color: #2c2c2c;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 350px;
   width: 100%;
-  height: 100%;
-  top: 4px;
-  left: -4px;
-  box-shadow: -5px 5px 0 #1b1f20;
 }
 
-.front-cover img {
-  width: 80%;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* Contenido */
-.content {
-  width: 350px;
-  min-height: 600px;
-  padding: 20px;
-  background: linear-gradient(to bottom, #d9d7c8 0%, white 8%);
-  background-size: 100% 30px;
-  border: 1px solid #d9d7c8;
-  box-shadow: 3px 3px 0 #1b1f20;
-  font-family: "Berkshire Swash", cursive;
-  color: #333;
-  font-size: 1.2rem;
-  line-height: 1.56;
-  position: relative;
-}
-
-.content::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 4px;
-  left: -3px;
-  box-shadow: -3px 3px 0 #1b1f20;
-}
-
-.upload-button {
-  bottom: 20px;
-  right: -150px;
-  background: #1b1f20;
+input[type="text"],
+input[type="number"] {
+  padding: 0.5rem;
+  background-color: #444;
   color: white;
-  padding: 10px 20px;
-  font-family: "Berkshire Swash", cursive;
-  border: 1px solid #fff;
-  box-shadow: 2px 2px 0 #1b1f20;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.upload-button:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #1b1f20;
-}
-
-.uploaded-image {
-  max-width: 100%;
-  display: block;
-  margin-top: 20px;
-  border: 1px solid #1b1f20;
-  box-shadow: 2px 2px 0 #1b1f20;
-}
-
-.form-section {
-  background-color: #1b1f20;
-  padding: 20px;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  width: 300px;
-  height: fit-content;
-  box-shadow: 3px 3px 0 #000;
-  color: white;
-  font-family: "Berkshire Swash", cursive;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.input-group input {
-  width: 95%;
-  padding: 8px;
-  background-color: #333;
-  color: white;
-  border: 1px solid #555;
+  border: 1px solid #777;
   border-radius: 4px;
-  font-family: inherit;
 }
 
-button[type="submit"] {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: rgb(0, 0, 0);
+button,
+.file-button {
+  background-color: black;
   color: white;
+  padding: 0.5rem;
   border: 1px solid white;
   border-radius: 4px;
   cursor: pointer;
-  font-family: "Berkshire Swash", cursive;
-  box-shadow: 2px 2px 0 #fff;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
-button[type="submit"]:hover {
+button:hover,
+.file-button:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #6b3636;
 }
 
 .error {
   color: red;
-  margin-top: 10px;
 }
 
 .success {
   color: limegreen;
-  margin-top: 10px;
 }
 
-.deathnote-section {
+.libros {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-.muertes-section {
+.libro-negro {
+  background-color: black;
   width: 300px;
-  background-color: #111;
-  color: white;
-  padding: 1rem;
-  margin-left: 2rem;
-  border: 2px solid #444;
-  border-radius: 8px;
-  overflow-y: auto;
-  max-height: 500px;
+  height: 400px;
+  position: relative;
+  box-shadow: inset -5px 5px 0 white;
 }
 
-.muerte-item {
+.libro-negro img {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+
+/* Estilo hoja de cuaderno */
+.libro-blanco {
+  background-color: #fdfdfd;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #fdfdfd,
+    #fdfdfd 24px,
+    #c0c0c0 25px
+  );
+  border: 1px solid #ccc;
+  padding: 1rem;
+  width: 300px;
+  min-height: 400px;
+  font-family: 'Courier New', monospace;
+  color: #333;
+  font-size: 1.1rem;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  line-height: 25px;
+  position: relative;
+}
+
+.libro-blanco::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 40px;
+  height: 100%;
+  width: 2px;
+  background-color: red;
+}
+
+.libro-blanco img {
+  max-width: 100%;
+  margin-top: 1rem;
+  border: 1px solid black;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.muertes {
+  background-color: #111;
+  padding: 1rem;
+  border: 2px solid #444;
+  max-width: 350px;
+  width: 100%;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 2rem;
+}
+
+.muertes h2 {
   margin-bottom: 1rem;
-  border-bottom: 1px solid #555;
+}
+
+.muertes ul {
+  list-style: none;
+  padding: 0;
+}
+
+.muertes li {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #444;
   padding-bottom: 0.5rem;
 }
 
-.muerte-foto {
+.muertes img {
   width: 100%;
   max-height: 150px;
   object-fit: cover;
   margin-top: 0.5rem;
   border-radius: 4px;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .container {
+    justify-content: center;
+  }
+
+  .libros {
+    flex-direction: row;
+  }
 }
