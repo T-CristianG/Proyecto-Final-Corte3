@@ -47,6 +47,7 @@ func createTableIfNotExists(db *sql.DB) error {
         nombre VARCHAR(255) NOT NULL,
         edad INT NOT NULL,
         causa VARCHAR(255) DEFAULT 'ataque al corazón',
+        detalles VARCHAR(512),
         foto_url VARCHAR(512) NOT NULL,
         registrado TIMESTAMP NOT NULL
     );`

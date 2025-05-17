@@ -23,13 +23,14 @@ func GenerarID() int {
 
 func GuardarRegistro(registro models.RegistroMuerte) error {
 	query := `
-        INSERT INTO registro_muerte (nombre, edad, causa, foto_url, registrado)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO registro_muerte (nombre, edad, causa, detalles, foto_url, registrado)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id`
 	err := DB.QueryRow(query,
 		registro.Nombre,
 		registro.Edad,
 		registro.Causa,
+		registro.Detalles,
 		registro.FotoURL,
 		registro.Registrado,
 	).Scan(&registro.ID)
@@ -41,7 +42,7 @@ func GuardarRegistro(registro models.RegistroMuerte) error {
 
 func ObtenerTodosRegistros() ([]models.RegistroMuerte, error) {
 	rows, err := DB.Query(`
-        SELECT id, nombre, edad, causa, foto_url, registrado
+        SELECT id, nombre, edad, causa, detalles, foto_url, registrado
         FROM registro_muerte`)
 	if err != nil {
 		return nil, err
@@ -51,7 +52,7 @@ func ObtenerTodosRegistros() ([]models.RegistroMuerte, error) {
 	var registros []models.RegistroMuerte
 	for rows.Next() {
 		var r models.RegistroMuerte
-		if err := rows.Scan(&r.ID, &r.Nombre, &r.Edad, &r.Causa, &r.FotoURL, &r.Registrado); err != nil {
+		if err := rows.Scan(&r.ID, &r.Nombre, &r.Edad, &r.Causa, &r.Detalles, &r.FotoURL, &r.Registrado); err != nil {
 			return nil, err
 		}
 		registros = append(registros, r)

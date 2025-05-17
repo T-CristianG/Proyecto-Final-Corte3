@@ -48,6 +48,9 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		causa = "ataque al corazón"
 	}
 
+	// Leer el campo "detalles" del formulario
+	detalles := r.FormValue("detalles")
+
 	archivo, manejador, err := r.FormFile("foto")
 	if err != nil {
 		http.Error(w, "Error al recibir la foto: "+err.Error(), http.StatusBadRequest)
@@ -78,6 +81,7 @@ func RegistrarMuerte(w http.ResponseWriter, r *http.Request) {
 		Nombre:     nombre,
 		Edad:       edad,
 		Causa:      causa,
+		Detalles:   detalles, // Asignamos el campo detalles
 		FotoURL:    rutaFoto,
 		Registrado: time.Now(),
 	}
